@@ -40,24 +40,22 @@ if($error =='' && $note != '' && $date != ''){
     }
     catch(PDOException $e){
         echo "Connection failed: " . $e->getMessage();
-      }          
+    }          
 }
 
 //update při splnění úkolu
 if (isset($_GET["ok"])){  
   //předám si číslo řádku na kterém se vyskytovalo poklikané tlačítko OK
-  $SendedButtonID = $_GET["ButtonID"];  
-  //vybereme řádek na který bylo kliknuto a uložíme ho do pole
+  $SendedButtonID = $_GET["ButtonID"];   
   try{
-    $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql_question= "UPDATE todotable SET done='OK' where id=$SendedButtonID";
-    $conn->exec($sql_question);
-    $conn = null;
+      $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql_question= "UPDATE todotable SET done='OK' where id=$SendedButtonID";
+      $conn->exec($sql_question);
+      $conn = null;
   }
-  catch(PDOException $e)
-  {
-    echo "Connection failed: " . $e->getMessage();
+  catch(PDOException $e){
+      echo "Connection failed: " . $e->getMessage();
   }
 }
 //reading from Database, return array of arrays
@@ -79,12 +77,10 @@ function get_data()
         return $data;
         echo "Connected successfully"; 
         $conn = null; 
-    }catch(PDOException $e)
-    {
+    }catch(PDOException $e){
         echo "Connection failed: " . $e->getMessage();
         return null;
     }     
-    return NULL;
 }
 
 function set_tableRow()
@@ -99,11 +95,9 @@ function set_tableRow()
       $table_str.='<tr>';
         $table_str.='<th scope="row">' . $row[0]. '</th>';
         $table_str.='<td>' . $row[1] . '</td>';
-        $table_str.='<td>' . $row[2] . '</td>';
-        //NÁPOVĚDA OD MARKA - NEPOCHOPIL JSEM $table_str.='<td><a href="index.php ? id=' . $row[0] . '" class="btn btn-primary">OK</a></td>';
-        //místo nápovědy od Marka si vložím formulář do části tabulky pro tlačítko OK
+        $table_str.='<td>' . $row[2] . '</td>';        
         
-        //zkontroluji jestli je na konci řádku v csv souboru příznak OK
+        //zkontroluji jestli je v posledním sloupci "done" příznak OK
         if($row[(count($row)-1)] == 'OK'){            
             $table_str.='<td>'. $row[3]. '</td>';
             $table_str.='<td></td>';
@@ -152,7 +146,7 @@ function set_tableRow()
         <label>Enter note</label>
         <input type="note" class="form-control" name="note" placeholder="enter note" >
       </div>
-      <div  align="center"><!--class="form-control"-->
+      <div  align="center">
         <input type="submit" class="btn btn-info" name="submit" value="save note"> <!--is the button that when clicked submits the form to the server for processing-->
       </div>      
     </form>
