@@ -82,7 +82,7 @@ function get_data()
         return null;
     }     
 }
-
+//<a href="edit.php">POZVÁNKY NA AKCE</a>
 function set_tableRow()
 {
   if(get_data()!=NULL){
@@ -95,8 +95,8 @@ function set_tableRow()
       $table_str.='<tr>';
         $table_str.='<th scope="row">' . $row[0]. '</th>';
         $table_str.='<td>' . $row[1] . '</td>';
-        $table_str.='<td>' . $row[2] . '</td>';        
-        
+        $table_str.='<td><a href="edit.php">' . $row[2] . '</a></td>';        
+        //<td><a href="edit.php">ostrihat vetve</a></td>
         //zkontroluji jestli je v posledním sloupci "done" příznak OK
         if($row[(count($row)-1)] == 'OK'){            
             $table_str.='<td>'. $row[3]. '</td>';
