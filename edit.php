@@ -3,7 +3,6 @@ $error = '';
 $date = '';
 $note='';
 
-//proč nestačí definovat zde? Pro funkci get_data()
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -15,12 +14,13 @@ function clean_text($string)
   $string = htmlspecialchars($string);//Convert special characters to HTML entities
   return $string;
 }
+
 $clikedID = $_GET['id'];//proč nele z $_GET['id'] nacitat opakovane?
 
 if(isset($_POST["submit"])) {
   if(empty($_POST["update_note"])){
       $error .='<p><label class="text-danger">please enter date</label></p>';  
-  }else {
+  }else{
       $EditedNote=clean_text($_POST["update_note"]);  
       try{
         $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
@@ -33,11 +33,9 @@ if(isset($_POST["submit"])) {
       catch(PDOException $e){
           echo "Connection failed: " . $e->getMessage();
       }    
+  }
 }
-}
-
 ?>
-
 
 <!doctype html>
 <html class="no-js" lang="">
@@ -66,8 +64,6 @@ if(isset($_POST["submit"])) {
         <a href="index.php" class="btn btn-info" role="button">go back</a>
       </div>      
     </form>
-
-   
    
 
   <script src="js/vendor/modernizr-3.6.0.min.js"></script>
