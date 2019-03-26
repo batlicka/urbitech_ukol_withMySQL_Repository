@@ -36,7 +36,8 @@ if($error =='' && $note != '' && $date != ''){
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);        
         $sql_question = "INSERT INTO todotable (date, content, done) VALUES ('2019-03-20', '$note', 'aktualni')";
         $conn->exec($sql_question);
-        $conn = null; 
+        echo 
+        $conn = null;
     }
     catch(PDOException $e){
         echo "Connection failed: " . $e->getMessage();
@@ -95,7 +96,7 @@ function set_tableRow()
       $table_str.='<tr>';
         $table_str.='<th scope="row">' . $row[0]. '</th>';
         $table_str.='<td>' . $row[1] . '</td>';
-        $table_str.='<td><a href="edit.php">' . $row[2] . '</a></td>';        
+        $table_str.='<td><a href="edit.php?id='. $row[0].'">' . $row[2] . '</a></td>';        
         //<td><a href="edit.php">ostrihat vetve</a></td>
         //zkontroluji jestli je v posledním sloupci "done" příznak OK
         if($row[(count($row)-1)] == 'OK'){            

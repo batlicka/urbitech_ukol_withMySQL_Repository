@@ -15,8 +15,26 @@ function clean_text($string)
   $string = htmlspecialchars($string);//Convert special characters to HTML entities
   return $string;
 }
+$clikedID = $_GET['id'];//proč nele z $_GET['id'] nacitat opakovane?
 
-
+if(isset($_POST["submit"])) {
+  if(empty($_POST["update_note"])){
+      $error .='<p><label class="text-danger">please enter date</label></p>';  
+  }else {
+      $EditedNote=clean_text($_POST["update_note"]);  
+      try{
+        $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql_question= "UPDATE todotable SET content= '$EditedNote' where id=$clikedID";//proč nele z id = $_GET['id'] nacitat opakovane?
+        
+        $conn->exec($sql_question);        
+        $conn = null;
+      }
+      catch(PDOException $e){
+          echo "Connection failed: " . $e->getMessage();
+      }    
+}
+}
 
 ?>
 
@@ -33,6 +51,7 @@ function clean_text($string)
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
 <body>
+      <P>>edditing note number: <?php echo $clikedID ?></p>
       <!--??? otázka na Marka, jak zakomponovat externí php soubor<form action="obsluha.php" method="post">-->
       <form method="post">
       <h3 align="center">Edit note</h3>
@@ -43,10 +62,12 @@ function clean_text($string)
         <input type="text" class="form-control" name="update_note" placeholder="enter new not for this date"  >
       </div>          
       <div  align="center">
-        <input type="submit" class="btn btn-info" name="submit" value="edit clicked note"> <!--is the button that when clicked submits the form to the server for processing-->
+        <input type="submit" class="btn btn-info" name="submit" value="save note" > <!--is the button that when clicked submits the form to the server for processing-->
+        <a href="index.php" class="btn btn-info" role="button">go back</a>
       </div>      
     </form>
 
+   
    
 
   <script src="js/vendor/modernizr-3.6.0.min.js"></script>
