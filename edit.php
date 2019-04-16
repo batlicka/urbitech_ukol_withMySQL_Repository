@@ -61,6 +61,21 @@ else
       <h3 align="center">Edit note</h3>
       <br/>
       <?php echo $error; ?>
+    
+      <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">date</th>
+          <th scope="col">note</th>    
+          <th scope="col">stav</th>      <!--vyřešeno-->  
+        </tr>
+      </thead>
+      <tbody>
+            <!--zde se vygeneruje řádek--> 
+      </tbody>
+    </table>
+
       <div class = "form-group">
         <label>enter new note</label>        
         <input type="text" class="form-control" name="update_note" placeholder="enter new not for this date"  >
