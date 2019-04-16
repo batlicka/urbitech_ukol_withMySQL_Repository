@@ -26,15 +26,21 @@ if(isset($_POST["submit"])) {
         $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql_question= "UPDATE todotable SET content= '$EditedNote' where id=$clikedID";//proč nele z id = $_GET['id'] nacitat opakovane?
-        
+
         $conn->exec($sql_question);        
         $conn = null;
       }
       catch(PDOException $e){
           echo "Connection failed: " . $e->getMessage();
       }    
-  }
+  }  
 }
+else
+{
+    //doplnit nactení data z databáze pri prvním příchodu na strunku
+}
+//doplnit odstranovani poznamek
+//upravovani dataumu
 ?>
 
 <!doctype html>
