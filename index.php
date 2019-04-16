@@ -158,11 +158,11 @@ function set_tableRow()
           <th scope="col">#</th>
           <th scope="col">date</th>
           <th scope="col">note</th>    
-          <th scope="col">vyřešeno</th>        
+          <th scope="col">rererererrrrr</th>      <!--vyřešeno-->  
         </tr>
       </thead>
       <tbody>
-        <?php echo set_tableRow(); ?>       
+        <?php echo set_tableRow(); ?>        
       </tbody>
     </table>
 
