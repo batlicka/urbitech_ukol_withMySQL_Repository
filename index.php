@@ -158,7 +158,7 @@ function set_tableRow()
           <th scope="col">#</th>
           <th scope="col">date</th>
           <th scope="col">note</th>    
-          <th scope="col">rererererrrrr</th>      <!--vyřešeno-->  
+          <th scope="col">StaflikStafklik</th>      <!--vyřešeno-->  
         </tr>
       </thead>
       <tbody>
