@@ -37,8 +37,51 @@ if(isset($_POST["submit"])) {
 }
 else
 {
-    //doplnit nactení data z databáze pri prvním příchodu na strunku
+  /*$table_str="";
+  $table_str .='<table class="table">';
+    $table_str .='<thead class="thead-dark">';
+      $table_str .='<tr>';
+        $table_str .='<th scope="col">#</th>';
+        $table_str .='<th scope="col">date</th>';
+        $table_str .='<th scope="col">note</th>' ;   
+        $table_str .='<th scope="col">stav</th>' ;     
+      $table_str .='</tr>';
+    $table_str .='</thead>';
+  $table_str .='<tbody>';
+              
+  $table_str .='</tbody>';
+$table_str .='</table>';
+echo $table_str;*/
 }
+function returnData(){
+    $clikedID = $_GET['id'];
+
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    
+    $data = [];
+    $row = 0;
+    try{
+        $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $conn->prepare("SELECT id, date, content, done FROM todotable WHERE id=$clikedID"); 
+        $stmt->execute();
+        //Returns an array containing all of the result set rows
+        $data = $stmt->fetchAll(PDO::FETCH_NUM);
+        return $data;
+        echo "Connected successfully"; 
+        $conn = null; 
+    }catch(PDOException $e){
+        echo "Connection failed: " . $e->getMessage();
+        return null;
+    }
+}
+print_r(returnData());
+function getEditedRow(){
+  ;
+}
+
 //doplnit odstranovani poznamek
 //upravovani dataumu
 ?>
@@ -68,13 +111,17 @@ else
           <th scope="col">#</th>
           <th scope="col">date</th>
           <th scope="col">note</th>    
-          <th scope="col">stav</th>      <!--vyřešeno-->  
+          <th scope="col">stav</th>      
         </tr>
       </thead>
       <tbody>
-            <!--zde se vygeneruje řádek--> 
+        <tr> 
+        <td  contenteditable="true">Aurelia Vega</td>
+        <td  contenteditable="true">30</td>
+        </tr> 
       </tbody>
     </table>
+    
 
       <div class = "form-group">
         <label>enter new note</label>        
