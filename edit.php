@@ -142,3 +142,8 @@ function getEditedRow(){
 </body>
 
 </html>
+<!--
+otázky Tom:
+1) práce s externíma .php souborama jak volat funkce uložené v externích php souborech
+2)proměnné definované v těle php souboru, vypadají jako globální, ale uvnitř funkcí nejsou viditelné, Jak je zviditelnit?
+  -->
