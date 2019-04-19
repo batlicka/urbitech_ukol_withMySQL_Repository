@@ -68,8 +68,9 @@ function returnData(){
         $stmt = $conn->prepare("SELECT id, date, content, done FROM todotable WHERE id=$clikedID"); 
         $stmt->execute();
         //Returns an array containing all of the result set rows
-        $data = $stmt->fetchAll(PDO::FETCH_NUM);
+        $data = $stmt->fetch(PDO::FETCH_NUM);
         return $data;
+        print_r($data);
         echo "Connected successfully"; 
         $conn = null; 
     }catch(PDOException $e){
@@ -79,7 +80,23 @@ function returnData(){
 }
 print_r(returnData());
 function getEditedRow(){
-  ;
+  $array = returnData();
+  if($array !=null){
+    $table_str="";    
+      $table_str.='<th scope="row">' . $array[0]. '</th>';
+      $table_str.='<td>' . $array[1] . '</td>';
+      $table_str.='<td>' . $array[2] . '</td>';
+      $table_str.='<td>' . $array[3] . '</td>';    
+  }
+  return $table_str;  
+}
+
+function VratDate(){
+  if(returnData()!=NULL){
+    $arr = returnData();
+    $dateV =$arr[1];
+    return $dateV;
+  }
 }
 
 //doplnit odstranovani poznamek
@@ -99,9 +116,7 @@ function getEditedRow(){
 </head>
 <body>
       <P>>edditing note number: <?php echo $clikedID ?></p>
-      <!--??? otázka na Marka, jak zakomponovat externí php soubor<form action="obsluha.php" method="post">-->
-      <form method="post">
-      <h3 align="center">Edit note</h3>
+      <!--??? otázka na Marka, jak zakomponovat externí php soubor<form action="obsluha.php" method="post">-->      
       <br/>
       <?php echo $error; ?>
     
@@ -116,23 +131,37 @@ function getEditedRow(){
       </thead>
       <tbody>
         <tr> 
-        <td  contenteditable="true">Aurelia Vega</td>
-        <td  contenteditable="true">30</td>
+                <?php echo getEditedRow()?>                                      <!--<td  contenteditable="true">Aurelia Vega</td>-->        
         </tr> 
       </tbody>
     </table>
-    
+    <h3 align="center">Edit note</h3>
+    <form class = "form-inline" method="post"> 
+      <div class="form-group">
+        <label class="sr-only" >id</label>
+        <input type="text" class="form-control" placeholder=<?php $arr = returnData(); echo $arr[0]; ?> disabled="disabled" >
+      </div>
 
-      <div class = "form-group">
-        <label>enter new note</label>        
-        <input type="text" class="form-control" name="update_note" placeholder="enter new not for this date"  >
-      </div>          
-      <div  align="center">
+      <div class="form-group">
+        <label class="sr-only" >date</label>
+        <input type="date" class="form-control" value =<?php echo VratDate(); ?> >
+      </div>
+
+      <div class="form-group">
+        <label class="sr-only" >note</label>
+        <input type="text" class="form-control" name="update_note" placeholder= <?php $arr = returnData(); echo $arr[2]; ?> >
+      </div>     
+
+      <div class="form-group">
+        <label class="sr-only" >stav</label>
+        <input type="text" class="form-control" name="stav" placeholder= "nejaky stav" >
+      </div>                                              
+              
+      <div >
         <input type="submit" class="btn btn-info" name="submit" value="save note" > <!--is the button that when clicked submits the form to the server for processing-->
         <a href="index.php" class="btn btn-info" role="button">go back</a>
-      </div>      
-    </form>
-   
+      </div> 
+    </form>   
 
   <script src="js/vendor/modernizr-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -140,6 +169,7 @@ function getEditedRow(){
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>  
 </body>
+
 
 </html>
 <!--

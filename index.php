@@ -84,6 +84,8 @@ function get_data()
         return null;
     }     
 }
+
+
 //<a href="edit.php">POZVÁNKY NA AKCE</a>
 function set_tableRow()
 {
