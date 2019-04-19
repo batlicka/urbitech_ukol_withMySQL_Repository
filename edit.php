@@ -15,44 +15,36 @@ function clean_text($string)
   return $string;
 }
 
-$clikedID = $_GET['id'];//proč nele z $_GET['id'] nacitat opakovane?
+$clikedID = $_GET['id'];//proč nelze $_GET['id'] nacitat opakovane?
 
-if(isset($_POST["submit"])) {
-  if(empty($_POST["update_note"])){
-      $error .='<p><label class="text-danger">please enter date</label></p>';  
-  }else{
-      $EditedNote=clean_text($_POST["update_note"]);  
-      try{
-        $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql_question= "UPDATE todotable SET content= '$EditedNote' where id=$clikedID";//proč nele z id = $_GET['id'] nacitat opakovane?
-
+if(isset($_POST["submit"])) {  
+  $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  if(empty($_POST["update_note"])){} //vrací true pokud je proměnná prázdná, pokud v sobě něco obsahuje vrací false 
+  else{
+    $EditedNote=clean_text($_POST["update_note"]);  
+    try{      
+      $sql_question= "UPDATE todotable SET content= '$EditedNote' where id=$clikedID";//proč nele z id = $_GET['id'] nacitat opakovane?
+      $conn->exec($sql_question);       
+    }
+    catch(PDOException $e){
+        echo "Connection failed: " . $e->getMessage();
+    } 
+  }  
+  if(empty($_POST["update_date"])){}
+  else{
+      $EditedDate=clean_text($_POST["update_date"]);  
+      try{      
+        $sql_question= "UPDATE todotable SET date= '$EditedDate' where id=$clikedID";//proč nele z id = $_GET['id'] nacitat opakovane?
         $conn->exec($sql_question);        
         $conn = null;
       }
       catch(PDOException $e){
           echo "Connection failed: " . $e->getMessage();
-      }    
-  }  
+      } 
+  }          
 }
-else
-{
-  /*$table_str="";
-  $table_str .='<table class="table">';
-    $table_str .='<thead class="thead-dark">';
-      $table_str .='<tr>';
-        $table_str .='<th scope="col">#</th>';
-        $table_str .='<th scope="col">date</th>';
-        $table_str .='<th scope="col">note</th>' ;   
-        $table_str .='<th scope="col">stav</th>' ;     
-      $table_str .='</tr>';
-    $table_str .='</thead>';
-  $table_str .='<tbody>';
-              
-  $table_str .='</tbody>';
-$table_str .='</table>';
-echo $table_str;*/
-}
+
 function returnData(){
     $clikedID = $_GET['id'];
 
@@ -68,9 +60,8 @@ function returnData(){
         $stmt = $conn->prepare("SELECT id, date, content, done FROM todotable WHERE id=$clikedID"); 
         $stmt->execute();
         //Returns an array containing all of the result set rows
-        $data = $stmt->fetch(PDO::FETCH_NUM);
-        return $data;
-        print_r($data);
+        $data = $stmt->fetch(PDO::FETCH_NUM);        
+        return $data;        
         echo "Connected successfully"; 
         $conn = null; 
     }catch(PDOException $e){
@@ -78,7 +69,6 @@ function returnData(){
         return null;
     }
 }
-print_r(returnData());
 function getEditedRow(){
   $array = returnData();
   if($array !=null){
@@ -131,7 +121,7 @@ function VratDate(){
       </thead>
       <tbody>
         <tr> 
-                <?php echo getEditedRow()?>                                      <!--<td  contenteditable="true">Aurelia Vega</td>-->        
+                <?php echo getEditedRow(); ?>                                      <!--<td  contenteditable="true">Aurelia Vega</td>-->        
         </tr> 
       </tbody>
     </table>
@@ -144,7 +134,7 @@ function VratDate(){
 
       <div class="form-group">
         <label class="sr-only" >date</label>
-        <input type="date" class="form-control" value =<?php echo VratDate(); ?> >
+        <input type="date" class="form-control" name= "update_date" value =<?php echo VratDate(); ?> ><!--<?php //echo VratDate(); ?>-->
       </div>
 
       <div class="form-group">
@@ -154,12 +144,12 @@ function VratDate(){
 
       <div class="form-group">
         <label class="sr-only" >stav</label>
-        <input type="text" class="form-control" name="stav" placeholder= "nejaky stav" >
+        <input type="text" class="form-control" name="stav" placeholder= <?php $arr = returnData(); echo $arr[3]; ?> disabled="disabled">
       </div>                                              
               
       <div >
         <input type="submit" class="btn btn-info" name="submit" value="save note" > <!--is the button that when clicked submits the form to the server for processing-->
-        <a href="index.php" class="btn btn-info" role="button">go back</a>
+        <a href="index.php" class="btn btn-info" role="button">go on overwiev</a>
       </div> 
     </form>   
 
@@ -176,4 +166,4 @@ function VratDate(){
 otázky Tom:
 1) práce s externíma .php souborama jak volat funkce uložené v externích php souborech
 2)proměnné definované v těle php souboru, vypadají jako globální, ale uvnitř funkcí nejsou viditelné, Jak je zviditelnit?
-  -->
+-->
