@@ -1,4 +1,6 @@
 <?php
+//tipy pro zlepšení uložit do externího php souboru
+
 $error = '';
 $date = '';
 $note='';
@@ -15,11 +17,11 @@ function clean_text($string)
   return $string;
 }
 
-$clikedID = $_GET['id'];//proč nelze $_GET['id'] nacitat opakovane?
-
+$clikedID = $_GET['id'];
 if(isset($_POST["submit"])) {  
   $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  //update of note
   if(empty($_POST["update_note"])){} //vrací true pokud je proměnná prázdná, pokud v sobě něco obsahuje vrací false 
   else{
     $EditedNote=clean_text($_POST["update_note"]);  
@@ -30,7 +32,8 @@ if(isset($_POST["submit"])) {
     catch(PDOException $e){
         echo "Connection failed: " . $e->getMessage();
     } 
-  }  
+  } 
+  //update of date 
   if(empty($_POST["update_date"])){}
   else{
       $EditedDate=clean_text($_POST["update_date"]);  
@@ -47,11 +50,9 @@ if(isset($_POST["submit"])) {
 
 function returnData(){
     $clikedID = $_GET['id'];
-
     $servername = "localhost";
     $username = "root";
-    $password = "";
-    
+    $password = "";    
     $data = [];
     $row = 0;
     try{
@@ -106,7 +107,7 @@ function VratDate(){
 </head>
 <body>
       <P>>edditing note number: <?php echo $clikedID ?></p>
-      <!--??? otázka na Marka, jak zakomponovat externí php soubor<form action="obsluha.php" method="post">-->      
+      <!--externí php soubor<form action="obsluha.php" method="post">-->      
       <br/>
       <?php echo $error; ?>
     
@@ -121,12 +122,13 @@ function VratDate(){
       </thead>
       <tbody>
         <tr> 
-                <?php echo getEditedRow(); ?>                                      <!--<td  contenteditable="true">Aurelia Vega</td>-->        
+          <?php echo getEditedRow(); ?>                                         
         </tr> 
       </tbody>
     </table>
     <h3 align="center">Edit note</h3>
-    <form class = "form-inline" method="post"> 
+    <form class = "form-inline" method="post">
+
       <div class="form-group">
         <label class="sr-only" >id</label>
         <input type="text" class="form-control" placeholder=<?php $arr = returnData(); echo $arr[0]; ?> disabled="disabled" >
@@ -134,7 +136,7 @@ function VratDate(){
 
       <div class="form-group">
         <label class="sr-only" >date</label>
-        <input type="date" class="form-control" name= "update_date" value =<?php echo VratDate(); ?> ><!--<?php //echo VratDate(); ?>-->
+        <input type="date" class="form-control" name= "update_date" value =<?php echo VratDate(); ?> >
       </div>
 
       <div class="form-group">
@@ -165,5 +167,4 @@ function VratDate(){
 <!--
 otázky Tom:
 1) práce s externíma .php souborama jak volat funkce uložené v externích php souborech
-2)proměnné definované v těle php souboru, vypadají jako globální, ale uvnitř funkcí nejsou viditelné, Jak je zviditelnit?
 -->

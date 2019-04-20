@@ -1,4 +1,3 @@
-
 <?php
 $error = '';
 $date = '';
@@ -31,22 +30,23 @@ if(isset($_POST["submit"])) {
     }
   }
   
-  //ukládání zadaných hodnot do Databáze
+//ukládání zadaných hodnot do Databáze
 if($error =='' && $note != '' && $date != ''){
     try{        
         $conn = new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);        
-        $sql_question = "INSERT INTO todotable (date, content, done) VALUES ('2019-03-20', '$note', 'aktualni')";
+        $sql_question = "INSERT INTO todotable (date, content, done) VALUES ('$date', '$note', 'aktualni')";
         $conn->exec($sql_question);
         echo 
         $conn = null;
+        header('Location: index.php');//redirect - řekne prohlížeči po odeslání formuláře, aby se reloadoval a zapomenul aktuální stav
+        exit;
     }
     catch(PDOException $e){
         echo "Connection failed: " . $e->getMessage();
     }          
 }
-//mena stavu + mazani
-  //update při splnění úkolu
+//pro update při splnění úkolu + mazani
   if (isset($_GET["ok"])){  
     //předám si číslo řádku na kterém se vyskytovalo poklikané tlačítko OK
     $SendedButtonID = $_GET["ButtonID"];   
@@ -101,8 +101,6 @@ function get_data()
     }     
 }
 
-
-//<a href="edit.php">POZVÁNKY NA AKCE</a>
 function set_tableRow()
 {
   if(get_data()!=NULL){
@@ -128,7 +126,7 @@ function set_tableRow()
             $table_str.='</tr>'; 
         }
         else{
-          $table_str.='<td>aktualni</td>';
+          $table_str.='<td><a href="index.php?val=akci">aktualni</a></td>';
           $table_str.='<td><form method="get">';
           $buttonID = $row[0];
           $table_str.='<input type="hidden" name="ButtonID" value="'.$buttonID.'">';
@@ -142,6 +140,11 @@ function set_tableRow()
   }
   else
     echo "žádná data k zobrazení";   
+}
+
+if(isset($_GET["val"]))
+{
+  echo "poklikanim na položku aktualni jsi přidal pomocí metody get, do adresního řádku dvojici val=akci, nastaveni hodnoty val bylo vyhodnoceno v php skriptu a vyvolalo tuto " . $_GET["val"];
 }
 ?>
 
@@ -157,7 +160,7 @@ function set_tableRow()
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
 <body>
-      <!--??? otázka na Marka, jak zakomponovat externí php soubor<form action="obsluha.php" method="post">-->
+      <!--??? zakomponování externího php soubor<form action="obsluha.php" method="post">-->
       <form method="post">
       <h3 align="center">To do list</h3>
       <br/>
@@ -171,7 +174,8 @@ function set_tableRow()
         <input type="note" class="form-control" name="note" placeholder="enter note" >
       </div>
       <div  align="center">
-        <input type="submit" class="btn btn-info" name="submit" value="save note"> <!--is the button that when clicked submits the form to the server for processing-->
+        <input type="submit" class="btn btn-info" name="submit" value="save note"> 
+        <!--when button is clicked is created pair submit=>"save note" then php form notice existence of pair and execute code in script-->
       </div>      
     </form>
 
