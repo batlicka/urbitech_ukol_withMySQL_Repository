@@ -3,6 +3,7 @@
 $error = '';
 $date = '';
 $note='';
+$SendedButtonID="";
 
 //proč nestačí definovat zde? Pro funkci get_data()
 $servername = "localhost";
@@ -44,22 +45,37 @@ if($error =='' && $note != '' && $date != ''){
         echo "Connection failed: " . $e->getMessage();
     }          
 }
+//mena stavu + mazani
+  //update při splnění úkolu
+  if (isset($_GET["ok"])){  
+    //předám si číslo řádku na kterém se vyskytovalo poklikané tlačítko OK
+    $SendedButtonID = $_GET["ButtonID"];   
+    try{
+        $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql_question= "UPDATE todotable SET done='OK' where id=$SendedButtonID";
+        $conn->exec($sql_question);
+        //$conn = null;
+    }
+    catch(PDOException $e){
+        echo "Connection failed: " . $e->getMessage();
+    }
+  }
+  else if(isset($_GET["deleteButton"])){
+    echo "was pressed delete" .  "button id: ";// . $SendedButtonID;
+    $SendedButtonID = $_GET["ButtonID"];
+    try{      
+        $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql_question= "DELETE FROM todotable where id=$SendedButtonID";
+        $conn->exec($sql_question);
+        $conn = null;
+    }
+    catch(PDOException $e){
+        echo "Connection failed: " . $e->getMessage();
+    }
+  }
 
-//update při splnění úkolu
-if (isset($_GET["ok"])){  
-  //předám si číslo řádku na kterém se vyskytovalo poklikané tlačítko OK
-  $SendedButtonID = $_GET["ButtonID"];   
-  try{
-      $conn= new PDO("mysql:host=$servername;dbname=todolist", $username, $password);
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $sql_question= "UPDATE todotable SET done='OK' where id=$SendedButtonID";
-      $conn->exec($sql_question);
-      $conn = null;
-  }
-  catch(PDOException $e){
-      echo "Connection failed: " . $e->getMessage();
-  }
-}
 //reading from Database, return array of arrays
 function get_data()
 {
@@ -99,12 +115,16 @@ function set_tableRow()
       $table_str.='<tr>';
         $table_str.='<th scope="row">' . $row[0]. '</th>';
         $table_str.='<td>' . $row[1] . '</td>';
-        $table_str.='<td><a href="edit.php?id='. $row[0].'">' . $row[2] . '</a></td>';        
-        //<td><a href="edit.php">ostrihat vetve</a></td>
+        $table_str.='<td><a href="edit.php?id='. $row[0].'">' . $row[2] . '</a></td>';              
         //zkontroluji jestli je v posledním sloupci "done" příznak OK
         if($row[(count($row)-1)] == 'OK'){            
-            $table_str.='<td>'. $row[3]. '</td>';
-            $table_str.='<td></td>';
+            $table_str.='<td>'. $row[3]. '</td>';  
+            //musím si udržovat pořád index řádku, případě že je poklikano delte
+            $table_str.='<td><form method="get">';
+            $buttonID = $row[0];          
+            $table_str.='<input type="hidden" name="ButtonID" value="'.$buttonID.'">';
+            $table_str.='<input type="submit" name="deleteButton"  class="btn btn-primary" value="delete">';
+            $table_str.= '</form></td>';  
             $table_str.='</tr>'; 
         }
         else{
@@ -112,7 +132,8 @@ function set_tableRow()
           $table_str.='<td><form method="get">';
           $buttonID = $row[0];
           $table_str.='<input type="hidden" name="ButtonID" value="'.$buttonID.'">';
-          $table_str.='<input type="submit" name="ok"  class="btn btn-primary" value="ok">';
+          $table_str.='<input type="submit" name="deleteButton"  class="btn btn-primary" value="delete">';
+          $table_str.='<input type="submit" name="ok"  class="btn btn-primary" value="confirmed">';          
           $table_str.= '</form></td>';               
           $table_str.='</tr>'; 
         }               
