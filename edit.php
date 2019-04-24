@@ -61,9 +61,8 @@ function returnData(){
         $stmt = $conn->prepare("SELECT id, date, content, done FROM todotable WHERE id=$clikedID"); 
         $stmt->execute();
         //Returns an array containing all of the result set rows
-        $data = $stmt->fetch(PDO::FETCH_NUM);        
-        return $data;        
-        echo "Connected successfully"; 
+        $data = $stmt->fetch(PDO::FETCH_NUM);                      
+        return $data;                
         $conn = null; 
     }catch(PDOException $e){
         echo "Connection failed: " . $e->getMessage();
@@ -141,7 +140,7 @@ function VratDate(){
 
       <div class="form-group">
         <label class="sr-only" >note</label>
-        <input type="text" class="form-control" name="update_note" placeholder= <?php $arr = returnData(); echo $arr[2]; ?> >
+        <input type="text" class="form-control" name="update_note" placeholder= "<?php $arr = returnData(); echo $arr[2]; ?>" >
       </div>     
 
       <div class="form-group">
