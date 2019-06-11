@@ -117,7 +117,7 @@ function set_tableRow()
         //zkontroluji jestli je v posledním sloupci "done" příznak OK
         if($row[(count($row)-1)] == 'OK'){            
             $table_str.='<td>'. $row[3]. '</td>';  
-            //musím si udržovat pořád index řádku, případě že je poklikano delte
+            //musím si udržovat pořád index řádku, případě že je poklikano delete
             $table_str.='<td><form method="get">';
             $buttonID = $row[0];          
             $table_str.='<input type="hidden" name="ButtonID" value="'.$buttonID.'">';
@@ -202,4 +202,4 @@ if(isset($_GET["val"]))
 
 </html>
 
-<!--Při té editaci místo do placeholderu bys to měl dat do value-->
+<!--https://www.w3schools.com/php/php_forms.asp-->

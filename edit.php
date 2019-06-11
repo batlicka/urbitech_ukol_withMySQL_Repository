@@ -123,9 +123,8 @@ function VratDate(){
       </tbody>
     </table>
     <h3 align="center">Edit note</h3>
-    <form class = "form-inline" method="post">
+    <form class = "form-inline" action= "obsluha_edit.php" method="post">
 
-      
       <div class="form-group">
         <label class="sr-only" >id</label>
         <input type="text" class="form-control" placeholder=<?php $arr = returnData(); echo $arr[0]; ?> disabled="disabled" >
@@ -147,7 +146,7 @@ function VratDate(){
       </div>                                              
               
       <div >
-        <input type="submit" class="btn btn-info" name="submit" value="save note" > <!--is the button that when clicked submits the form to the server for processing-->
+        <input type="submit" class="btn btn-info" name="submit" value="save note" > <!--is the button that when clicked submits the form is sended to the server for processing-->
         <a href="index.php" class="btn btn-info" role="button">go on overwiev</a>
       </div> 
     </form>   
