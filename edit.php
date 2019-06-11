@@ -88,9 +88,6 @@ function VratDate(){
     return $dateV;
   }
 }
-
-//doplnit odstranovani poznamek
-//upravovani dataumu
 ?>
 
 <!doctype html>
@@ -128,6 +125,7 @@ function VratDate(){
     <h3 align="center">Edit note</h3>
     <form class = "form-inline" method="post">
 
+      
       <div class="form-group">
         <label class="sr-only" >id</label>
         <input type="text" class="form-control" placeholder=<?php $arr = returnData(); echo $arr[0]; ?> disabled="disabled" >
@@ -140,7 +138,7 @@ function VratDate(){
 
       <div class="form-group">
         <label class="sr-only" >note</label>
-        <input type="text" class="form-control" name="update_note" placeholder= "<?php $arr = returnData(); echo $arr[2]; ?>" >
+        <input type="text" class="form-control" name="update_note" value= "<?php $arr = returnData(); echo $arr[2]; ?>" >
       </div>     
 
       <div class="form-group">

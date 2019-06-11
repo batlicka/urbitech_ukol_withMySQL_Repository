@@ -201,3 +201,5 @@ if(isset($_GET["val"]))
 </body>
 
 </html>
+
+<!--Při té editaci místo do placeholderu bys to měl dat do value-->
