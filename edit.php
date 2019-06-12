@@ -1,7 +1,7 @@
 <?php
 //tipy pro zlepšení uložit do externího php souboru
 
-$error = '';
+
 $date = '';
 $note='';
 
@@ -104,8 +104,7 @@ function VratDate(){
 <body>
       <P>>edditing note number: <?php echo $clikedID ?></p>
       <!--externí php soubor<form action="obsluha.php" method="post">-->      
-      <br/>
-      <?php echo $error; ?>
+      <br/>      
     
       <table class="table">
       <thead class="thead-dark">
@@ -123,7 +122,7 @@ function VratDate(){
       </tbody>
     </table>
     <h3 align="center">Edit note</h3>
-    <form class = "form-inline" action= "obsluha_edit.php" method="post">
+    <form class = "form-inline"  method="post"> <!--action="obsluha_edit.php"-->
 
       <div class="form-group">
         <label class="sr-only" >id</label>
